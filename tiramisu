@@ -7,6 +7,7 @@ require 'net/http'
 require 'uri'
 require 'json'
 require 'pathname'
+require 'fileutils'
 
 # If the environmental variable AMARO_EXPECT is set, color output is disabled,
 # and a standard getc is used instead of io/console's getch. This mode is
@@ -509,6 +510,7 @@ class Bootstrapper
     def run!
         init_fs
         init_git
+        select_language_spec_files
         rename_files
         update_contents
         init_externals
@@ -597,6 +599,22 @@ class Bootstrapper
 
             sh('git clean -xdf') # Remove .gitignored files and directories
         end
+    end
+    
+    def select_language_spec_files
+      task 'Copying project files' do
+        if options[:language] == "objc"          
+          FileUtils.cp_r(Dir["objc/*"], '.')
+          File.rename(".gitmodules_objc", ".gitmodules")
+          File.delete(".gitmodules_swift")
+        else
+          FileUtils.cp_r(Dir["swift/*"], '.')
+          File.rename(".gitmodules_swift", ".gitmodules")
+          File.delte(".gitmodules_obj")
+        end
+        FileUtils.rm_rf("objc/")
+        FileUtils.rm_rf("swift/")
+      end
     end
 
     def rename_files
@@ -702,6 +720,18 @@ project_name = Prompt.new('New project name', :key => :project_name) do |p|
 end
 
 
+language = Prompt.new('Language (swift or objc)', :key => :language) do |p|
+    p.default = 'swift'
+    p.show_default = true
+    p.validation_proc = lambda do |input|
+      input.downcase!
+      raise 'Please choose between "swift" or "objc".' if input != "swift" && input != "obj"
+      input
+    end
+end
+
+
+
 class_prefix = Prompt.new('Class prefix (optional; 2 or preferably 3 characters)', :key => :class_prefix) do |p|
     p.default = ''
     p.show_default = false
@@ -736,8 +766,11 @@ end
 
 
 bundle_domain = Prompt.new('Bundle ID domain', :key => :bundle_domain) do |p|
+  if org_name.value == nil
+    p.pre_run_hook = -> {p.default = 'com.mwermuth'}
+  else
     p.pre_run_hook = -> { p.default = 'com.' + org_name.value.gsub(/\W/, '').downcase! }
-
+  end
     p.validation_proc = lambda do |input|
         raise 'Domain should be a reverse domain name, like "com.apple".' unless input =~ /\w+\.\w+/
         input.gsub(/\s+/, '-').downcase
@@ -749,10 +782,10 @@ end
 
 print <<'EOS'.chomp.faint
     ___           ___
-   /\  \         /\__\
-  /  \  \       / /  /
+   /\   \         /\__\
+  /  \   \       / /   /
  / /\ \__\     / /__/
- \ \ \/__/  &  \ \  \
+ \ \ \/__/  & \ \   \
   \ \__\        \ \__\
    \/__/         \/__/
 EOS
@@ -763,7 +796,7 @@ bootstrapper.check_sanity
 
 bootstrapper.puts_source_description
 
-bootstrapper.options = Prompt.run_sequence(project_name, class_prefix, full_name, org_name, bundle_domain)
+bootstrapper.options = Prompt.run_sequence(project_name, language, class_prefix, full_name, org_name, bundle_domain)
 
 puts <<-EOS.gray
 

@@ -1,0 +1,16 @@
+[submodule "External/xcconfigs"]
+	path = External/xcconfigs
+	url = git://github.com/jspahrsummers/xcconfigs.git
+	branch = master
+[submodule "External/Quick"]
+	path = External/Quick
+	url = https://github.com/Quick/Quick.git
+[submodule "External/Alamofire"]
+	path = External/Alamofire
+	url = https://github.com/Alamofire/Alamofire.git
+[submodule "External/Nimble"]
+	path = External/Nimble
+	url = https://github.com/Quick/Nimble.git
+[submodule "External/swiftRAC-Kit"]
+	path = External/swiftRAC-Kit
+	url = https://github.com/mwermuth/swiftRAC-Kit.git

@@ -54,7 +54,7 @@
     NSString *crashlyticsAPIKey = @"<<CrashlyticsAPIKey>>";
 
     if([crashlyticsAPIKey characterAtIndex:0] != '<') [Crashlytics startWithAPIKey:crashlyticsAPIKey];
-    else NSLog(@"Set your Crashlytics API key in the app delegate to enable Crashlytics integration!");
+    else NSLog(@"Set your CrasCytics API key in the app delegate to enable Crashlytics integration!");
     #endif
 
     #if HAS_POD(CocoaLumberjack)
