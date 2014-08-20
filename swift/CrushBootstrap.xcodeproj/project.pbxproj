@@ -334,6 +334,7 @@
 				2CA94A6419A4B6AE00411349 /* Increment Build Number */,
 				2CB41EAB19A4A7E800CE89E1 /* Resources */,
 				1FC61303F6FA4516B22517BA /* Copy Pods Resources */,
+				2C7EAC7B19A4FD4E00B9F919 /* Crashlytics Script */,
 				2CA94A6519A4B71D00411349 /* Remove Unused Localizations */,
 			);
 			buildRules = (
@@ -503,6 +504,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2C7EAC7B19A4FD4E00B9F919 /* Crashlytics Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Crashlytics Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "CRASHLYTICS_SCRIPT=\"./Pods/CrashlyticsFramework/Crashlytics.framework/run\"\n[ -x \"$CRASHLYTICS_SCRIPT\" ] || exit 0\n\n# Enter your key below:\nCRASHLYTICS_API_KEY=\"<<CrashlyticsAPIKey>>\"\n\nif [ \"${CRASHLYTICS_API_KEY:0:1}\" = \"<\" ]; then\necho \"warning: Set your Crashlytics API key in the Build Phases tab to enable Crashlytics integration\" 1>&2\nexit 0\nfi\n\n\"$CRASHLYTICS_SCRIPT\" \"$CRASHLYTICS_API_KEY\"";
 			showEnvVarsInLog = 0;
 		};
 		2CA94A6419A4B6AE00411349 /* Increment Build Number */ = {

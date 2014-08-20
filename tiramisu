@@ -501,8 +501,8 @@ class Bootstrapper
     REPLACEMENT_DOMAIN = 'com.crushlovely'
     REPLACEMENT_CRASHLYTICS_KEY = '<<CrashlyticsAPIKey>>'
 
-    BOOTSTRAP_REPO = 'git://github.com/crushlovely/Amaro.git'
-    DEFAULT_BOOTSTRAP_BRANCH = 'master'
+    BOOTSTRAP_REPO = 'git://github.com/mwermuth/Amaro.git'
+    DEFAULT_BOOTSTRAP_BRANCH = 'swifty'
     BOOTSTRAP_WEBSITE = 'https://github.com/crushlovely/Amaro'
 
     attr_accessor :options
@@ -785,14 +785,14 @@ end
 
 print <<'EOS'.chomp.faint
     ___           ___
-   /\   \         /\__\
-  /  \   \       / /   /
+   /\   \        /\__\
+  /  \   \      / /  /
  / /\ \__\     / /__/
- \ \ \/__/  & \ \   \
+ \ \ \/__/  &  \ \  \
   \ \__\        \ \__\
    \/__/         \/__/
 EOS
-puts "  Amaro v0.2.2\n".blue.bold
+puts "  Amaro v0.3.0 - Swift included\n".blue.bold
 
 bootstrapper = Bootstrapper.new
 bootstrapper.check_sanity
