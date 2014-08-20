@@ -673,7 +673,7 @@ class Bootstrapper
         edit 'Podfile' if YesNoPrompt.run!('Would you like to edit your Podfile?', :default => false)
 
         task 'Initializing submodules and CocoaPods' do
-            sh("sh restore-git-submodules.sh")
+            sh("sh ./bootstrap-scripts/restore-git-submodules.sh")
             sh('git submodule -q update --init --recursive')
             sh("git submodule --quiet foreach 'git checkout -q master'")
             sh('pod install --silent')
