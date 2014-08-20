@@ -610,10 +610,12 @@ class Bootstrapper
         else
           FileUtils.cp_r(Dir["swift/*"], '.')
           File.rename(".gitmodules_swift", ".gitmodules")
-          File.delte(".gitmodules_obj")
+          File.delete(".gitmodules_objc")
         end
         FileUtils.rm_rf("objc/")
         FileUtils.rm_rf("swift/")
+        
+        commit 'Selected Language Files'
       end
     end
 
@@ -671,6 +673,7 @@ class Bootstrapper
         edit 'Podfile' if YesNoPrompt.run!('Would you like to edit your Podfile?', :default => false)
 
         task 'Initializing submodules and CocoaPods' do
+            sh("sh restore-git-submodules.sh")
             sh('git submodule -q update --init --recursive')
             sh("git submodule --quiet foreach 'git checkout -q master'")
             sh('pod install --silent')
@@ -725,7 +728,7 @@ language = Prompt.new('Language (swift or objc)', :key => :language) do |p|
     p.show_default = true
     p.validation_proc = lambda do |input|
       input.downcase!
-      raise 'Please choose between "swift" or "objc".' if input != "swift" && input != "obj"
+      raise 'Please choose between "swift" or "objc".' if input != "swift" && input != "objc"
       input
     end
 end
